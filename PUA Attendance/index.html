@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-image.png">
+  <link rel="apple-touch-icon" href="icons/icon-image.png">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0b1220">
+
+
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Attendance — Prototype</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app" id="app" data-theme="dark">
+  <header>
+    <div class="brand">
+      <div class="logo">PUA</div>
+      <div>
+        <h1>Attendance</h1>
+        <div class="muted"> TA — Fingerprint check</div>
+      </div>
+    </div>
+    <div class="controls">
+    <div class="chip" id="weekLabel">Week: 0.00 / 35.00 h</div>
+    <button class="toggle" id="themeBtn" title="Toggle theme">🌙</button>
+    <button class="toggle" id="clearAll" title="Clear history">
+      <span class="material-icons">delete</span>
+    </button>
+</div>
+
+  </header>
+
+  <main>
+    <section class="card">
+      <div class="center">
+        <div id="fingerBtn" class="finger" title="Tap to record">
+          <span class="material-icons">fingerprint</span>
+        </div>
+
+        <div class="info">
+          <div>Last action: <span id="lastAction" class="last">—</span></div>
+          <div class="small">Today: <span id="todayWorked">0.00</span> h</div>
+        </div>
+
+        <div style="width:100%;margin-top:12px">
+          <div class="summary">
+            <div style="display:flex;justify-content:space-between">
+              <div class="muted">Weekly Progress</div>
+              <div class="muted" id="percentLabel">0%</div>
+            </div>
+            <div class="progressWrap">
+              <div class="bar"><div class="barInner" id="barInner"></div></div>
+              <div style="width:64px;text-align:right;font-weight:600;color:var(--accent-2)" id="hoursLabel">0h</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <aside class="card">
+      <div class="histHeader">
+        <strong>History</strong>
+        <div class="muted">Sorted newest first</div>
+      </div>
+
+      <div class="tableWrap">
+        <table id="historyTable" aria-label="history table">
+          <thead>
+            <tr><th>Date</th><th>Check In</th><th>Check Out</th><th>Duration</th><th>Edit</th></tr>
+          </thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+    </aside>
+  </main>
+</div>
+
+<!-- Edit modal -->
+<div id="modal" class="modal" aria-hidden="true">
+  <div class="modalCard">
+    <h3>Edit Entry</h3>
+    <div id="editDate" style="font-weight:600;margin-bottom:6px"></div>
+    <label>Check In</label>
+    <input id="inpIn" type="time">
+    <label>Check Out</label>
+    <input id="inpOut" type="time">
+    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px">
+      <button class="btn ghost" id="cancelEdit">Cancel</button>
+      <button class="btn" id="saveEdit">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- JS -->
+<script src="script.js"></script>
+</body>
+</html>
