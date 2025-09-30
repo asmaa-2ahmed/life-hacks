@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="icon.png" type="image/png">
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Expense Tracker</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      margin: 0;
+      padding: 0;
+    }
+    .app {
+      max-width: 600px;
+      margin: auto;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    h1 button {
+      margin-left: 10px;
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+    }
+    .balance {
+      font-size: 20px;
+      margin: 15px 0;
+      padding: 10px;
+      background: #fff;
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .form {
+      background: #fff;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .form input {
+      width: calc(100% - 20px);
+      padding: 10px;
+      margin: 5px 0;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    .form button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 5px;
+      background: #4caf50;
+      color: #fff;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .form button:hover {
+      background: #45a049;
+    }
+    .history {
+      background: #fff;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 8px;
+      text-align: center;
+      border-bottom: 1px solid #eee;
+    }
+    th {
+      background: #f2f2f2;
+    }
+    tr.divider-row td {
+      font-weight: bold;
+      background: #e0e0e0;
+      color: #333;
+      text-align: center;
+      border-top: 2px solid #aaa;
+      border-bottom: 2px solid #aaa;
+    }
+    .expense-actions button {
+      margin: 0 3px;
+      border: none;
+      background: none;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .expense-actions button:hover {
+      opacity: 0.7;
+    }
+    /* Modal styles */
+    .modal {
+      display: none; 
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+    }
+    .modal-content {
+      background: #fff;
+      margin: 20% auto;
+      padding: 20px;
+      border-radius: 12px;
+      width: 85%;
+      max-width: 350px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+      text-align: center;
+    }
+    .modal-content h2 {
+      margin-top: 0;
+      color: #333;
+    }
+    .modal-content input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      text-align: center;
+      font-size: 16px;
+    }
+    .modal-content button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .set-btn {
+      background: #4caf50;
+      color: #fff;
+    }
+    .close-btn {
+      background: #f44336;
+      color: #fff;
+    }
+    .clear-btn {
+      background: #ff9800;
+      color: #fff;
+    }
+    .close {
+      float: right;
+      font-size: 22px;
+      font-weight: bold;
+      cursor: pointer;
+      color: #666;
+    }
+    .editing input {
+      width: 80px;
+      padding: 5px;
+      font-size: 14px;
+    }
+    .editing .save-btn, .editing .cancel-btn {
+      border: none;
+      border-radius: 5px;
+      padding: 5px 8px;
+      cursor: pointer;
+      font-size: 14px;
+      margin: 2px;
+    }
+    .save-btn { background: #4caf50; color: white; }
+    .cancel-btn { background: #f44336; color: white; }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <h1>
+      💰 Expense Tracker 
+      <button onclick="openModal()">⚙️</button>
+    </h1>
+
+    <div class="balance">
+      Current Balance: <span id="balance">0</span> EGP
+    </div>
+
+    <div class="form">
+      <h2> 📝 Add Expense</h2>
+      <input type="number" id="amount" placeholder="Enter amount"/>
+      <input type="text" id="description" placeholder="Enter description"/>
+      <button onclick="addExpense()">Add Expense</button>
+    </div>
+
+    <div class="history">
+      <h2> 📜 History</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Amount</th>
+            <th>Description</th>
+            <th>Time</th>
+            <th>Date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="historyList"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Budget Modal -->
+  <div id="budgetModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <h2>Settings</h2>
+      <p id="currentBudgetText"></p>
+      <input type="number" id="budget" placeholder="Enter your budget"/>
+      <button class="set-btn" onclick="setBudget()">✅ Set Budget</button>
+      <button class="clear-btn" onclick="clearHistory()">🗑️ Clear History</button>
+      <button class="close-btn" onclick="closeModal()">❌ Cancel</button>
+    </div>
+  </div>
+
+  <script>
+    let balance = localStorage.getItem("balance") 
+                  ? parseFloat(localStorage.getItem("balance")) 
+                  : 0;
+    let history = localStorage.getItem("history") 
+                  ? JSON.parse(localStorage.getItem("history")) 
+                  : [];
+
+    function updateUI() {
+      document.getElementById("balance").innerText = balance.toFixed(2);
+      let historyList = document.getElementById("historyList");
+      historyList.innerHTML = "";
+      history.forEach((item, index) => {
+        let tr = document.createElement("tr");
+        if (item.type === "divider") {
+          tr.className = "divider-row";
+          tr.innerHTML = `<td colspan="5">=== New Monthly Budget: ${item.amount} EGP (${item.date}) ===</td>`;
+        } else if (item.editing) {
+          tr.classList.add("editing");
+          tr.innerHTML = `
+            <td><input type="number" id="editAmount${index}" value="${item.amount}" /></td>
+            <td><input type="text" id="editDesc${index}" value="${item.description}" /></td>
+            <td>${item.time}</td>
+            <td>${item.date}</td>
+            <td>
+              <button class="save-btn" onclick="saveEdit(${index})">Save</button>
+              <button class="cancel-btn" onclick="cancelEdit(${index})">Cancel</button>
+            </td>
+          `;
+        } else {
+          tr.innerHTML = `
+            <td>${item.amount} EGP</td>
+            <td>${item.description}</td>
+            <td>${item.time}</td>
+            <td>${item.date}</td>
+            <td class="expense-actions">
+              <button onclick="editExpense(${index})">✏️</button>
+              <button onclick="deleteExpense(${index})">🗑️</button>
+            </td>
+          `;
+        }
+        historyList.appendChild(tr);
+      });
+    }
+
+    function openModal() {
+      document.getElementById("budgetModal").style.display = "block";
+      document.getElementById("currentBudgetText").innerText = 
+        "Current balance: " + balance.toFixed(2) + " EGP";
+    }
+
+    function closeModal() {
+      document.getElementById("budgetModal").style.display = "none";
+    }
+
+    function setBudget() {
+      let budget = parseFloat(document.getElementById("budget").value);
+      if (!isNaN(budget) && budget >= 0) {
+        balance = budget;
+        let now = new Date();
+        let date = now.toLocaleDateString();
+        let time = now.toLocaleTimeString();
+        history.push({ type: "divider", amount: budget, date: date, time: time });
+        localStorage.setItem("balance", balance);
+        localStorage.setItem("history", JSON.stringify(history));
+        updateUI();
+        closeModal();
+      }
+    }
+
+    function addExpense() {
+      let amount = parseFloat(document.getElementById("amount").value);
+      let description = document.getElementById("description").value;
+      if (!isNaN(amount) && amount > 0 && description.trim() !== "") {
+        balance -= amount;
+        let now = new Date();
+        let date = now.toLocaleDateString();
+        let time = now.toLocaleTimeString();
+        history.push({ amount: amount, description: description, date: date, time: time });
+        localStorage.setItem("balance", balance);
+        localStorage.setItem("history", JSON.stringify(history));
+        updateUI();
+
+        // ✅ clear input fields after adding
+        document.getElementById("amount").value = "";
+        document.getElementById("description").value = "";
+      }
+    }
+
+    function editExpense(index) {
+      history[index].editing = true;
+      updateUI();
+    }
+
+    function saveEdit(index) {
+      let newAmount = parseFloat(document.getElementById(`editAmount${index}`).value);
+      let newDesc = document.getElementById(`editDesc${index}`).value;
+      if (!isNaN(newAmount) && newAmount > 0 && newDesc.trim() !== "") {
+        balance += history[index].amount;
+        balance -= newAmount;
+        history[index] = { amount: newAmount, description: newDesc, date: history[index].date, time: history[index].time };
+        localStorage.setItem("balance", balance);
+        localStorage.setItem("history", JSON.stringify(history));
+        updateUI();
+      }
+    }
+
+    function cancelEdit(index) {
+      delete history[index].editing;
+      updateUI();
+    }
+
+    function deleteExpense(index) {
+      let item = history[index];
+      if (item.type !== "divider") {
+        balance += item.amount;
+      }
+      history.splice(index, 1);
+      localStorage.setItem("balance", balance);
+      localStorage.setItem("history", JSON.stringify(history));
+      updateUI();
+    }
+
+    function clearHistory() {
+      if (confirm("Are you sure you want to clear all history?")) {
+        history = [];
+        localStorage.setItem("history", JSON.stringify(history));
+        updateUI();
+      }
+    }
+
+    updateUI();
+
+    window.onclick = function(event) {
+      let modal = document.getElementById("budgetModal");
+      if (event.target === modal) {
+        modal.style.display = "none";
+      }
+    }
+  </script>
+</body>
+</html>
