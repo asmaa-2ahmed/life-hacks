@@ -6,7 +6,6 @@
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0b1220">
 
-
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>PUA Attendance</title>
@@ -20,31 +19,30 @@
 </head>
 <body>
 <div class="app" id="app" data-theme="dark">
+  <!-- ================= HEADER ================= -->
   <header>
     <div class="brand">
       <div class="logo">PUA</div>
       <div>
         <h1>Attendance</h1>
-        <div class="muted"> TA — Fingerprint check</div>
+        <div class="muted">TA — Fingerprint check</div>
       </div>
     </div>
-    <div class="controls">
-    <div class="chip" id="weekLabel">Week: 0.00 / 35.00 h</div>
-    <button class="toggle" id="themeBtn" title="Toggle theme">🌙</button>
-    <button class="toggle" id="clearAll" title="Clear history">
-      <span class="material-icons">delete</span>
-    </button>
-</div>
 
+    <div class="controls">
+      <div class="chip" id="monthLabel">Month: 0.00 / 0.00 h</div>
+      <button class="toggle" id="setDaysBtn" title="Set working days">⚙️</button>
+      <button class="toggle" id="clearAll" title="Clear history">
+        <span class="material-icons">delete</span>
+      </button>
+    </div>
   </header>
 
+  <!-- ================= MAIN ================= -->
   <main>
+    <!-- Monthly Progress Section -->
     <section class="card">
       <div class="center">
-        <div id="fingerBtn" class="finger" title="Tap to record">
-          <span class="material-icons">fingerprint</span>
-        </div>
-
         <div class="info">
           <div>Last action: <span id="lastAction" class="last">—</span></div>
           <div class="small">Today: <span id="todayWorked">0.00</span> h</div>
@@ -53,7 +51,7 @@
         <div style="width:100%;margin-top:12px">
           <div class="summary">
             <div style="display:flex;justify-content:space-between">
-              <div class="muted">Weekly Progress</div>
+              <div class="muted">Monthly Progress</div>
               <div class="muted" id="percentLabel">0%</div>
             </div>
             <div class="progressWrap">
@@ -63,13 +61,14 @@
           </div>
         </div>
 
+        <div id="extraLabel" class="extra-label">—</div>
       </div>
     </section>
 
+    <!-- Attendance History -->
     <aside class="card">
       <div class="histHeader">
         <strong>History</strong>
-        <div class="muted">Sorted newest first</div>
       </div>
 
       <div class="tableWrap">
@@ -84,7 +83,14 @@
   </main>
 </div>
 
-<!-- Edit modal -->
+<!-- ================= FINGERPRINT BUTTON ================= -->
+<div class="fingerprint-container">
+  <div id="fingerBtn" class="finger" title="Tap to record">
+    <span class="material-icons">fingerprint</span>
+  </div>
+</div>
+
+<!-- ================= EDIT MODAL ================= -->
 <div id="modal" class="modal" aria-hidden="true">
   <div class="modalCard">
     <h3>Edit Entry</h3>
@@ -100,7 +106,6 @@
   </div>
 </div>
 
-<!-- JS -->
 <script src="script.js"></script>
 </body>
 </html>

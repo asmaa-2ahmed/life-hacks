@@ -22,14 +22,15 @@
 
 * {
   box-sizing: border-box;
-  font-family: 'Inter',system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial;
+  font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, 'Helvetica Neue', Arial;
 }
 
 body {
   margin: 0;
-  background: linear-gradient(180deg,var(--bg),#e9f0fb);
+  background: linear-gradient(180deg, var(--bg), #e9f0fb);
   min-height: 100vh;
   color: var(--muted);
+  padding-bottom: 160px; /* مساحة كافية لزرار البصمة */
 }
 
 .app {
@@ -55,7 +56,7 @@ header {
   width: 52px;
   height: 52px;
   border-radius: 12px;
-  background: linear-gradient(135deg,var(--accent),var(--accent-2));
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -102,7 +103,7 @@ main {
   gap: 18px;
 }
 
-/* left card */
+/* Cards */
 .card {
   background: var(--card);
   border-radius: 14px;
@@ -118,6 +119,7 @@ main {
   gap: 12px;
 }
 
+/* Fingerprint button default style */
 .finger {
   width: 150px;
   height: 150px;
@@ -182,7 +184,7 @@ main {
   width: 0%;
 }
 
-/* right panel */
+/* History section */
 .histHeader {
   display: flex;
   align-items: center;
@@ -218,6 +220,7 @@ tbody td {
   color: var(--muted);
 }
 
+/* Buttons */
 .btn {
   padding: 8px 12px;
   border-radius: 10px;
@@ -253,7 +256,7 @@ footer {
   font-size: 13px;
 }
 
-/* modal */
+/* Modal */
 .modal {
   position: fixed;
   inset: 0;
@@ -289,10 +292,32 @@ input[type=time] {
   margin-top: 6px;
 }
 
+/* ✅ Fingerprint fixed at bottom center */
+.fingerprint-container {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  z-index: 1000;
+}
+
+.fingerprint-container .finger {
+  width: 120px;
+  height: 120px;
+  background: linear-gradient(180deg, #fff, var(--glass));
+  box-shadow: 0 10px 25px rgba(11,79,128,0.25);
+  transition: transform 0.15s ease;
+}
+
+.fingerprint-container .finger:hover {
+  transform: scale(1.05);
+}
+
 /* 📱 Tablet adjustments */
 @media (max-width: 880px) {
   main {
-    flex-direction: column; /* ✅ fixed from grid-template-columns */
+    flex-direction: column;
   }
   .finger {
     width: 120px;
@@ -303,7 +328,7 @@ input[type=time] {
   }
 }
 
-/* 📱 Extra responsive rules */
+/* 📱 Responsive tweaks */
 @media (max-width: 768px) {
   header {
     flex-direction: column;
@@ -352,11 +377,18 @@ input[type=time] {
   }
 
   .modalCard {
-    width: 90%; /* make modal fit on small screens */
+    width: 90%;
   }
 
   .chip {
     font-size: 12px;
     padding: 6px 10px;
   }
+}
+.extra-label {
+  text-align: center;
+  margin-top: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
 }
