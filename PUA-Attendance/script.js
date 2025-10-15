@@ -167,13 +167,36 @@ document.getElementById('setDaysBtn').addEventListener('click', () => {
   }
 });
 
-// 🖐️ fingerprint button
-document.getElementById('fingerBtn').addEventListener('click', punchNow);
+// // 🖐️ fingerprint button
+// document.getElementById('fingerBtn').addEventListener('click', punchNow);
 
-document.getElementById('fingerBtn').addEventListener('touchstart', (e) => {
-  e.preventDefault(); // prevent double trigger
-  punchNow();
+// document.getElementById('fingerBtn').addEventListener('touchstart', (e) => {
+//   e.preventDefault(); // prevent double trigger
+//   punchNow();
+// });
+
+
+document.getElementById("fingerprint-btn").addEventListener("click", async () => {
+  if (window.PublicKeyCredential) {
+    try {
+      await navigator.credentials.get({
+        publicKey: {
+          challenge: new Uint8Array([1, 2, 3, 4]),
+          userVerification: "required"
+        }
+      });
+      alert("Fingerprint verified ✅");
+      checkInOrOut(); // function بتاعتك العادية
+    } catch (err) {
+      alert("Fingerprint canceled ❌");
+    }
+  } else {
+    if (confirm("Simulate fingerprint scan? 👆")) {
+      checkInOrOut();
+    }
+  }
 });
+
 
 
 // 🌙 theme toggle + save preference
