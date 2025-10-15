@@ -167,14 +167,6 @@ document.getElementById('setDaysBtn').addEventListener('click', () => {
   }
 });
 
-// 🗑️ clear all
-document.getElementById('clearAll').addEventListener('click', () => {
-  if (confirm('Are you sure you want to clear all history?')) {
-    localStorage.removeItem(STORAGE_KEY);
-    rebuildUI();
-  }
-});
-
 // 🖐️ fingerprint button
 document.getElementById('fingerBtn').addEventListener('click', punchNow);
 
