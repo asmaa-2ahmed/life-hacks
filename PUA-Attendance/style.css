@@ -392,3 +392,21 @@ input[type=time] {
   font-weight: 600;
   color: #fff;
 }
+/* ===== 🔧 Fix controls alignment on mobile and desktop ===== */
+
+header {
+  align-items: flex-start; /* يخلي العناصر تطلع فوق شوية */
+}
+
+.controls {
+  position: relative;
+  top: -6px; /* 👈 يرفع الشيب والأيقونات لفوق */
+}
+
+/* في الشاشات الصغيرة (موبايل) */
+@media (max-width: 768px) {
+  .controls {
+    align-self: flex-end; /* يخليهم يظهروا في اليمين فوق */
+    margin-top: -10px;    /* 👈 يرفعهم أكتر لفوق */
+  }
+}
