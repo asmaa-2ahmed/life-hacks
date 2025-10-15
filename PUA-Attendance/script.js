@@ -176,25 +176,23 @@ document.getElementById('setDaysBtn').addEventListener('click', () => {
 // });
 
 
-document.getElementById("fingerprint-btn").addEventListener("click", async () => {
-  if (window.PublicKeyCredential) {
-    try {
-      await navigator.credentials.get({
-        publicKey: {
-          challenge: new Uint8Array([1, 2, 3, 4]),
-          userVerification: "required"
-        }
-      });
-      alert("Fingerprint verified ✅");
-      checkInOrOut(); // function بتاعتك العادية
-    } catch (err) {
-      alert("Fingerprint canceled ❌");
-    }
-  } else {
-    if (confirm("Simulate fingerprint scan? 👆")) {
-      checkInOrOut();
-    }
-  }
+// 🖐️ Fingerprint button
+const fingerBtn = document.getElementById("fingerBtn");
+
+// عند الضغط بالماوس أو اللمس على الموبايل
+fingerBtn.addEventListener("click", () => {
+  punchNow();
+});
+
+fingerBtn.addEventListener("touchstart", (e) => {
+  e.preventDefault(); // يمنع التكرار المزدوج
+  punchNow();
+});
+
+
+// 🖐️ For touch devices - prevent double trigger
+fingerBtn.addEventListener("touchstart", (e) => {
+  e.preventDefault();
 });
 
 
