@@ -170,6 +170,12 @@ document.getElementById('setDaysBtn').addEventListener('click', () => {
 // 🖐️ fingerprint button
 document.getElementById('fingerBtn').addEventListener('click', punchNow);
 
+document.getElementById('fingerBtn').addEventListener('touchstart', (e) => {
+  e.preventDefault(); // prevent double trigger
+  punchNow();
+});
+
+
 // 🌙 theme toggle + save preference
 const appRoot = document.getElementById('app');
 

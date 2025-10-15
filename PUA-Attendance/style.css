@@ -410,3 +410,18 @@ header {
     margin-top: -10px;    /* 👈 يرفعهم أكتر لفوق */
   }
 }
+
+.fingerprint-container {
+  z-index: 9999; /* bring to front of everything */
+}
+
+.fingerprint-container .finger {
+  pointer-events: auto; /* ensure touches are detected */
+  touch-action: manipulation; /* improve mobile responsiveness */
+}
+
+
+.modal.show {
+  display: flex;
+}
+
